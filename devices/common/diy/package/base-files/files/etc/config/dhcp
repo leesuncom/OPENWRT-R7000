@@ -1,12 +1,12 @@
 
 config dnsmasq
-	option domainneeded '1'
+	option domainneeded '0'
 	option localise_queries '1'
 	option rebind_protection '0'
 	option local '/lan/'
 	option domain 'lan'
 	option expandhosts '1'
-	option cachesize '0'
+	option cachesize '4096'
 	option authoritative '1'
 	option readethers '1'
 	option leasefile '/tmp/dhcp.leases'
@@ -19,9 +19,10 @@ config dnsmasq
 	option filter_aaaa '1'
 	option sequential_ip '1'
 	list interface 'lan'
-	option dns_redirect '0'
-	option port '0'
-	option old_dns_redirect '1'
+	option dns_redirect '1'
+	option rebind_localhost '1'
+	list server '127.0.0.1#5335'
+	option noresolv '1'
 
 config dhcp 'lan'
 	option interface 'lan'
@@ -30,7 +31,8 @@ config dhcp 'lan'
 	option leasetime '12h'
 	option force '1'
 	option ndp 'hybrid'
-	list dhcp_option '6,192.168.3.2'
+	option ra 'hybrid'
+	option dhcpv6 'hybrid'
 
 config dhcp 'wan'
 	option interface 'wan'
@@ -43,4 +45,19 @@ config domain
 config domain
 	option name 'R7000'
 	option ip '192.168.3.2'
+
+config domain '_sc_pw'
+	option name 'pw'
+	option ip '10.0.0.1'
+	option comments 'PassWall'
+
+config domain '_ta'
+	option name 'time.android.com'
+	option ip '203.107.6.88'
+	option comments 'time.android'
+
+config domain 'default_server'
+	option name 'kwrt'
+	option ip '10.0.0.1'
+	option comments '后台地址'
 
