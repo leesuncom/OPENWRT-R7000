@@ -1,4 +1,3 @@
-@ -1,355 +1,355 @@
 #=================================================
 # https://github.com/P3TERX/Actions-OpenWrt
 # Description: Build OpenWrt using GitHub Actions
@@ -7,7 +6,6 @@
 # Blog: https://p3terx.com
 #=================================================
 
-name: OP-24.10-6.6-R7000
 name: Build OpenWrt
 
 on: 
@@ -73,7 +71,6 @@ jobs:
             # 若需严格限制仅 bcm53xx 运行，可添加 exit 1 终止流程：
             # exit 1
         fi
-
     - name: Trigger Packages Update
       continue-on-error: true
       if: contains(github.event.action, 'pkg')
@@ -85,7 +82,6 @@ jobs:
             -H "Authorization: token ${{ secrets.REPO_RR7000 }}" \
           --data '{"event_type": "update"}'
         fi
-
     - name: Free disk space
       uses: coder-xiaomo/free-disk-space@main
       with:
@@ -112,7 +108,6 @@ jobs:
         sudo timedatectl set-timezone "Asia/Shanghai"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-
     - name: Get current date
       id: date
       run: |
@@ -120,7 +115,6 @@ jobs:
         echo "date2=$(date +'%m/%d %Y')" >> $GITHUB_ENV
         VERSION="$(echo "${{github.event.action}}" | grep -Eo " [0-9.]+" | sed -e 's/ //')" || true
         [ "$VERSION" ] && echo "VERSION=$VERSION" >> $GITHUB_ENV || echo "VERSION=$(date +'%m.%d')" >> $GITHUB_ENV
-
     - name: Clone source code
       run: |
         set -x
@@ -150,7 +144,6 @@ jobs:
                 git checkout ${REPO_BRANCH}
             fi
         fi
-
     - name: Free up disk space
       env:
         DEBIAN_FRONTEND: noninteractive
@@ -159,7 +152,6 @@ jobs:
         ln -sf /mnt/openwrt/dl openwrt/dl
         ln -sf /mnt/openwrt/staging_dir openwrt/staging_dir
         ln -sf /mnt/openwrt/build_dir openwrt/build_dir
-
     - name: Load custom configuration
       run: |
         function git_clone_path() {
@@ -203,7 +195,6 @@ jobs:
           /bin/bash "devices/${{matrix.target}}/$DIY_SH"
         fi
         cp -Rf ./diy/* ./ || true
-
     - name: Apply patches
       run: |
         cd openwrt
@@ -222,7 +213,6 @@ jobs:
         CONFIG_CRYPTO_CHACHA20POLY1305=y \
         CONFIG_FAT_DEFAULT_IOCHARSET="utf8" \
         ' `find target/linux -path "target/linux/*/config-*"`
-
     - name: Defconfig
       run: |
         cd openwrt
@@ -236,7 +226,6 @@ jobs:
         make defconfig
         fi
         cat .config
-
     - name: Cache
       uses: stupidloud/cachewrtbuild@main
       with:
@@ -253,7 +242,6 @@ jobs:
             rm -rf staging_dir/!(*${{ env.MTARGET }}*|host|hostpkg) build_dir/!(*${{ env.MTARGET }}*|host|hostpkg)
         fi
         df -hT
-
     - name: SSH connection to Actions
       uses: kiddin9/debugger-action@master
       if: contains(github.event.action, 'ssh')
@@ -269,7 +257,6 @@ jobs:
         rm -rf staging_dir/toolchain-*/bin/*openwrt-linux-musl-lto-dump
         rm -rf staging_dir/toolchain-*/initial
         df -hT
-
     - name: Organize files
       id: organize
       continue-on-error: true
@@ -281,7 +268,6 @@ jobs:
         rm -rf kwrt-!(*imagebuilder*)
         Emoji=("🎉" "🤞" "✨" "🎁" "🎈" "🎄" "🎨" "💋" "🍓" "🍕" "🍉" "💐" "🌴" "🚀" "🛸" "🗽" "⛅" "🌈" "🔥" "⛄" "🐶" "🏅" "🦄" "🐤")
         echo "EMOJI=${Emoji[$[$RANDOM % ${#Emoji[@]}]]}" >> $GITHUB_ENV
-
     - name: Upload firmware for artifact
       uses: actions/upload-artifact@main
       if: env.UPLOAD_FIRMWARE_FOR_ARTIFACT == 'true'
@@ -289,7 +275,6 @@ jobs:
         name: ${{ env.VERSION }}_${{matrix.target}}
         path: |
           openwrt/bin/targets/
-
     - name: Deploy imagebuilder to server
       uses: easingthemes/ssh-deploy@main
       if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser')
@@ -312,7 +297,6 @@ jobs:
         [ ${{ env.WETRANS }} ] && echo -e "[WeTransfer] (${{ env.WETRANS }} 🗽)\n" >> release.txt
         [ ${{ env.COWURL }} ] && echo -e "[奶牛上传] (${{ env.COWURL }} 🐮)\n" >> release.txt
         [ ${{ env.NOTICE }} ] && echo -e "${{ env.NOTICE }}" >> release.txt || true
-
     - name: Upload firmware for release
       uses: softprops/action-gh-release@master
       continue-on-error: true
@@ -330,13 +314,11 @@ jobs:
       if: env.SCKEY
       run: |
         # [ steps.compile.outputs.status == 'success' ] && curl https://sctapi.ftqq.com/${{ secrets.SCKEY }}.send?text=🎉OpenWrt_${{ env.VERSION }}_${{matrix.target}}编译完成😋|| curl https://sctapi.ftqq.com/${{ secrets.SCKEY }}.send?text=❌OpenWrt_${{ env.VERSION }}_${{matrix.target}}编译失败😂
-
     - name: Telegram notification
       if: env.TELEGRAM_TOKEN && ! contains(github.event.action, 'notg')
       continue-on-error: true
       run: |
         curl -k --data chat_id="${{ env.TELEGRAM_CHAT_ID }}" --data "text=🎉 OpenWrt ${{ env.VERSION }} ${{matrix.target}} 编译成功 😋  https://dl.openwrt.ai/firmware/${{matrix.target}}/  ${{ env.COWURL }}   ${{ env.WETRANS }} 🚀" "https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendMessage"
-
     - name: Delete workflow runs
       uses: GitRML/delete-workflow-runs@main
       continue-on-error: true
