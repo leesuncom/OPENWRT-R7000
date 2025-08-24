@@ -47,7 +47,6 @@ jobs:
         fi
         echo "REPO_URL=${REPO_URL}" >> $GITHUB_ENV
         echo "REPO_BRANCH=${REPO_BRANCH}" >> $GITHUB_ENV
-
     - name: Trigger Packages Update
       run: |
         gitdate=$(curl -H "Authorization: token ${{ secrets.REPO_RR7000 }}" -s "https://api.github.com/repos/kiddin9/kwrt-packages/actions/runs" | jq -r '.workflow_runs[0].created_at')
@@ -59,7 +58,6 @@ jobs:
         -H "Authorization: token ${{ secrets.REPO_RR7000 }}" \
         --data '{"event_type": "update"}'
         fi
-
     - name: Trigger Compile
       run: |
         sudo timedatectl set-timezone "$TZ"
