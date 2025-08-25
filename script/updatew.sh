@@ -188,34 +188,6 @@ sed -i.bak \
 cat "${CHINA_DOMAIN_TEMP}" > "${CHINA_DOMAIN_FILE}"
 log "国内加速域名列表更新完成！目标文件：${CHINA_DOMAIN_FILE}"
 log "国内域名总数：$(grep -c '^nameserver' "${CHINA_DOMAIN_FILE}") 条"
-
-##############################################################################
-# 7. 更新 Hosts 文件（GitHub/Docker 等服务优化）
-##############################################################################
-log "=== 步骤6：更新 Hosts 文件 ==="
-HOSTS_FILE="devices/common/diy/package/base-files/files/etc/hosts"
-HOSTS_SRC_URL="https://ghfast.top/https://raw.githubusercontent.com/shidahuilang/hosts/main/hosts"
-
-# 检查 Hosts 文件是否存在
-if [ ! -f "${HOSTS_FILE}" ]; then
-  log "WARNING：Hosts 文件不存在，跳过更新！路径：${HOSTS_FILE}"
-else
-  # 清理旧的 ING Hosts 区块（避免重复）
-  sed -i '/# ING Hosts Start/,/# ING Hosts End/d' "${HOSTS_FILE}"
-  
-  # 拉取新 Hosts 并追加
-  log "正在拉取新 Hosts 列表（${HOSTS_SRC_URL}）..."
-  HOSTS_CONTENT=$(curl -kLfsm 10 --retry 2 "${HOSTS_SRC_URL}")
-  if [ -z "${HOSTS_CONTENT}" ]; then
-    log "WARNING：Hosts 列表拉取失败，跳过更新"
-  else
-    echo -e "\n# ING Hosts Start" >> "${HOSTS_FILE}"
-    echo -e "${HOSTS_CONTENT}" >> "${HOSTS_FILE}"
-    echo -e "# ING Hosts End" >> "${HOSTS_FILE}"
-    log "Hosts 文件更新完成！新增条目数：$(echo "${HOSTS_CONTENT}" | grep -c '^[0-9]') 条"
-  fi
-fi
-
 ##############################################################################
 # 8. 清理临时文件 + 重启 SmartDNS（生效配置）
 ##############################################################################
