@@ -22,7 +22,7 @@ curl -sS https://www.cloudflare.com/ips-v4/ > devices/common/diy/package/base-fi
 
 
 # 引入配置 conf-file /etc/smartdns/anti-ad-smartdns.conf
-# curl -sS https://anti-ad.net/anti-ad-for-smartdns.conf > devices/common/diy/package/base-files/files/etc//smartdns/conf.d/anti-ad-smartdns.conf
+# curl -sS https://anti-ad.net/anti-ad-for-smartdns.conf > devices/common/diy/package/base-files/files/etc/smartdns/conf.d/anti-ad-smartdns.conf
 
 # 获取DNS的SPKI，并按指定格式写入spki文件
 echo "spki_cloudflare: $(echo | openssl s_client -connect '1.0.0.1:853' 2> /dev/null | openssl x509 -pubkey -noout | openssl pkey -pubin -outform der | openssl dgst -sha256 -binary | openssl enc -base64)" > devices/common/diy/package/base-files/files/etc/smartdns/spki
