@@ -27,7 +27,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     
-    name: Build ${{matrix.target}}
+    # name: Build ${{matrix.target}}
+    name: Build NetGear R7000
     strategy:
       fail-fast: false
       matrix:
