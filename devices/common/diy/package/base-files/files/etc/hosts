@@ -6,6 +6,9 @@ ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 =======
 
+# ING Hosts End
+>>>>>>> 4bc0913966e3731dc4650aab5eb10aab2c01172e
+
 # ING Hosts Start
 # ING Hosts Start
 # Raw Url: https://raw.githubusercontent.com/shidahuilang/hosts/main/hosts
@@ -65,4 +68,3 @@ ff02::2 ip6-allrouters
 # TMM Hosts End
 # ING Hosts End
 # ING Hosts End
->>>>>>> 4bc0913966e3731dc4650aab5eb10aab2c01172e
