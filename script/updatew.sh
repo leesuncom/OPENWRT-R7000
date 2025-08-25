@@ -25,14 +25,6 @@ if [ ! -d "${SMARTDNS_CONF_DIR}" ]; then
   exit 1
 fi
 
-# 备份旧配置（避免更新失败导致配置丢失，按日期命名备份）
-log "=== 初始化：备份旧配置 ==="
-BACKUP_SUFFIX=$(date +%Y%m%d_%H%M%S)
-cp -r "${SMARTDNS_CONF_DIR}/domain-set" "${SMARTDNS_CONF_DIR}/domain-set.bak.${BACKUP_SUFFIX}" 2>/dev/null || true
-cp -f "${SMARTDNS_CONF_DIR}/blacklist-ip.conf" "${SMARTDNS_CONF_DIR}/blacklist-ip.conf.bak.${BACKUP_SUFFIX}" 2>/dev/null || true
-cp -f "${SMARTDNS_CONF_DIR}/spki" "${SMARTDNS_CONF_DIR}/spki.bak.${BACKUP_SUFFIX}" 2>/dev/null || true
-log "旧配置备份完成（后缀：${BACKUP_SUFFIX}）"
-
 ##############################################################################
 # 2. 拉取并格式化 GFW 列表（生成 proxy-domain-list.conf）
 ##############################################################################
@@ -139,8 +131,6 @@ done
 # 检查 SPKI 文件是否有效
 if [ $(wc -l < "${SPKI_FILE}") -eq 0 ]; then
   log "ERROR：所有 DNS 的 SPKI 均获取失败，可能是网络问题或端口被屏蔽"
-  # 恢复旧 SPKI 配置
-  cp -f "${SMARTDNS_CONF_DIR}/spki.bak.${BACKUP_SUFFIX}" "${SPKI_FILE}" 2>/dev/null || true
 else
   log "SPKI 指纹文件更新完成！目标文件：${SPKI_FILE}"
 fi
@@ -158,18 +148,15 @@ IP_SRC_CLANG=$(curl -kLfsm 10 --retry 2 "https://ispip.clang.cn/all_cn.txt")
 
 # 检查是否所有源都拉取失败
 if [ -z "${IP_SRC_QQWRY}" ] && [ -z "${IP_SRC_IPIP}" ] && [ -z "${IP_SRC_CLANG}" ]; then
-  log "ERROR：所有国内 IP 源均拉取失败，恢复旧黑名单配置"
-  cp -f "${SMARTDNS_CONF_DIR}/blacklist-ip.conf.bak.${BACKUP_SUFFIX}" "${BLACKLIST_IP_FILE}" 2>/dev/null || true
-  continue
+  log "ERROR：所有国内 IP 源均拉取失败，无法生成 IP 黑名单"
+else
+  # 合并、去重、过滤无效格式（仅保留 IP/CIDR 格式）
+  echo -e "${IP_SRC_QQWRY}\n${IP_SRC_IPIP}\n${IP_SRC_CLANG}" | \
+    sort -u | \
+    grep -E '^([0-9]+\.){3}[0-9]+(/[0-9]+)?$' | \
+    sed -e '/^$/d' -e 's/^/blacklist-ip /g' > "${BLACKLIST_IP_FILE}"
+  log "国内 IP 黑名单更新完成！条目数：$(grep -c '^blacklist-ip' "${BLACKLIST_IP_FILE}") 条"
 fi
-
-# 合并、去重、过滤无效格式（仅保留 IP/CIDR 格式）
-echo -e "${IP_SRC_QQWRY}\n${IP_SRC_IPIP}\n${IP_SRC_CLANG}" | \
-  sort -u | \
-  grep -E '^([0-9]+\.){3}[0-9]+(/[0-9]+)?$' | \
-  sed -e '/^$/d' -e 's/^/blacklist-ip /g' > "${BLACKLIST_IP_FILE}"
-
-log "国内 IP 黑名单更新完成！条目数：$(grep -c '^blacklist-ip' "${BLACKLIST_IP_FILE}") 条"
 
 ##############################################################################
 # 6. 拉取国内加速域名列表（生成 domains.china.smartdns.conf）
@@ -263,5 +250,4 @@ log " - GFW 列表：${PROXY_DOMAIN_FILE}"
 log " - 国内域名列表：${CHINA_DOMAIN_FILE}"
 log " - IP 黑名单：${BLACKLIST_IP_FILE}"
 log " - SPKI 指纹：${SPKI_FILE}"
-log "旧配置备份后缀：${BACKUP_SUFFIX}（位于同一目录下）"
 exit 0
