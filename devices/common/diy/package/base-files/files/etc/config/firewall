@@ -1,8 +1,8 @@
 
 config defaults
-	option input 'REJECT'
+	option input 'ACCEPT'
 	option output 'ACCEPT'
-	option forward 'REJECT'
+	option forward 'ACCEPT'
 	option flow_offloading '1'
 	option flow_offloading_hw '1'
 	option fullcone '1'
@@ -20,3 +20,88 @@ config include 'shadowsocksr'
 	option path '/var/etc/shadowsocksr.include'
 	option reload '1'
 
+config rule
+	option name 'Allow-DHCP-Server'
+	option src 'lan'
+	option proto 'udp'
+	option src_port '68'
+	option dest_port '67'
+	option target 'ACCEPT'
+	option family 'ipv4'
+	option dest_ip '192.168.3.2'
+
+config rule
+	option name 'Allow-ICMP'
+	option src 'lan'
+	option proto 'icmp'
+	option target 'ACCEPT'
+	option family 'ipv4'
+
+config rule
+	option name 'Allow-SmartDNS-535'
+	option src 'lan'
+	option proto 'tcp udp'
+	option dest_port '535'
+	option target 'ACCEPT'
+	option family 'ipv4'
+	option dest 'lan'
+	option dest_ip '192.168.3.2'
+
+config rule
+	option name 'Allow-SmartDNS-536'
+	option src 'lan'
+	option proto 'tcp udp'
+	option dest_port '536'
+	option target 'ACCEPT'
+	option family 'ipv4'
+	option dest_ip '192.168.3.2'
+	option dest 'lan'
+
+config rule
+	option name 'Allow-SmartDNS-DoT-8753'
+	option src 'lan'
+	option proto 'tcp'
+	option dest_port '8753'
+	option target 'ACCEPT'
+	option family 'ipv4'
+	option dest_ip '192.168.3.2'
+	option dest 'lan'
+
+config rule
+	option name 'Allow-SmartDNS-DoT-8755'
+	option src 'lan'
+	option proto 'tcp'
+	option dest_port '8755'
+	option target 'ACCEPT'
+	option family 'ipv4'
+	option dest_ip '192.168.3.2'
+	option dest 'lan'
+
+config rule
+	option name 'Allow-SmartDNS-DoH-6773'
+	option src 'lan'
+	option proto 'tcp'
+	option dest_port '6773'
+	option target 'ACCEPT'
+	option family 'ipv4'
+	option dest_ip '192.168.3.2'
+	option dest 'lan'
+
+config rule
+	option name 'Allow-SmartDNS-DoH-6775'
+	option src 'lan'
+	option proto 'tcp'
+	option dest_port '6775'
+	option target 'ACCEPT'
+	option family 'ipv4'
+	option dest_ip '192.168.3.2'
+	option dest 'lan'
+
+config rule
+    option name 'Allow-Local-SmartDNS'
+    option proto 'tcp udp'
+    option dest_port '535 536 8753 8755 6773 6775'  # 目标端口（SmartDNS使用的端口）
+    option target 'ACCEPT'
+    option family 'ipv4'
+    option src_ip '127.0.0.1'  # 限制源为本地回环
+    option dest_ip '127.0.0.1'  # 限制目标为本地回环
