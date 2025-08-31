@@ -50,12 +50,12 @@ block_undelegated = true
 reject_ttl = 10
 
 # 缓存设置
-cache = true
-cache_size = 512
-cache_min_ttl = 300
-cache_max_ttl = 3600
-cache_neg_min_ttl = 60
-cache_neg_max_ttl = 600
+cache = false
+# cache_size = 512
+# cache_min_ttl = 300
+# cache_max_ttl = 3600
+# cache_neg_min_ttl = 60
+# cache_neg_max_ttl = 600
 
 # 本地 DoH 服务 - 确保证书路径正确
 [local_doh]
