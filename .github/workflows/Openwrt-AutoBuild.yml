@@ -195,7 +195,7 @@ jobs:
           echo "/bin/bash devices/${{matrix.target}}/$DIY_SH"
           /bin/bash "devices/${{matrix.target}}/$DIY_SH"
         fi
-        cp -Rf ./diy/* ./ || true
+        cp -rfv ./diy/* ./ || true
         chmod 755 ./package/base-files/files/etc/hosts.sh || true
         chmod 755 ./package/base-files/files/etc/updatew.sh || true
         chmod 755 ./package/base-files/files/etc/smartdns/check-doh.sh || true 
