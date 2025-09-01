@@ -16,12 +16,12 @@
 # wget -N https://raw.githubusercontent.com/openwrt/packages/master/lang/golang/golang/Makefile -P feeds/packages/lang/golang/golang/
 
 # replace luci-theme-argon to lastest update
-rm -rf feeds/luci/applications/luci-app-argon-config
-rm -rf feeds/packages/theme/luci-theme-argon 
-rm -rf feeds/smpackage/luci-theme-argon 
-rm -rf feeds/smpackage/luci-app-argon-config
-git clone https://github.com/jerrykuku/luci-theme-argon.git feeds/packages/theme/luci-theme-argon
-git clone https://github.com/jerrykuku/luci-app-argon-config.git feeds/luci/applications/luci-app-argon-config
+#rm -rf feeds/luci/applications/luci-app-argon-config
+#rm -rf feeds/packages/theme/luci-theme-argon 
+#rm -rf feeds/smpackage/luci-theme-argon 
+#rm -rf feeds/smpackage/luci-app-argon-config
+#git clone https://github.com/jerrykuku/luci-theme-argon.git feeds/packages/theme/luci-theme-argon
+#git clone https://github.com/jerrykuku/luci-app-argon-config.git feeds/luci/applications/luci-app-argon-config
 
 # replace MOSdns to lastest update
 #rm -rf feeds/smpackage/luci-app-mosdns
