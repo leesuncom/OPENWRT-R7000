@@ -24,13 +24,13 @@ git clone https://github.com/jerrykuku/luci-theme-argon.git feeds/packages/theme
 git clone https://github.com/jerrykuku/luci-app-argon-config.git feeds/luci/applications/luci-app-argon-config
 
 # replace MOSdns to lastest update
-rm -rf feeds/smpackage/luci-app-mosdns
-rm -rf feeds/smpackage/mosdns
-rm -rf feeds/luci/applications/luci-app-mosdns
-rm -rf feeds/packages/utils/v2dat
-rm -rf feeds/packages/net/v2ray-geodata
-git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
-git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
+#rm -rf feeds/smpackage/luci-app-mosdns
+#rm -rf feeds/smpackage/mosdns
+#rm -rf feeds/luci/applications/luci-app-mosdns
+#rm -rf feeds/packages/utils/v2dat
+#rm -rf feeds/packages/net/v2ray-geodata
+#git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
+#git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 
 
 
