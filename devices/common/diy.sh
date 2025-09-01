@@ -37,7 +37,7 @@ echo "$(date +"%s")" >version.date
 sed -i '/$(curdir)\/compile:/c\$(curdir)/compile: package/opkg/host/compile' package/Makefile
 sed -i "s/DEFAULT_PACKAGES:=/DEFAULT_PACKAGES:=luci-app-firewall luci-app-package-manager luci-app-upnp \
 luci-base luci-compat luci-lib-ipkg luci-lib-fs \
-wget-ssl curl autocore htop nano zram-swap kmod-lib-zstd kmod-tcp-bbr bash openssh-sftp-server block-mount resolveip ds-lite swconfig /" include/target.mk
+wget-ssl curl autocore htop nano zram-swap kmod-lib-zstd kmod-tcp-bbr bash openssh-sftp-server resolveip ds-lite swconfig /" include/target.mk
 
 sed -i "s/procd-ujail//" include/target.mk
 
