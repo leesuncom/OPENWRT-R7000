@@ -10,6 +10,11 @@
 # See /LICENSE for more information.
 #
 
+# goland 2.1 to golang 2.2
+rm -rf feeds/packages/lang/golang
+git clone https://github.com/smpackagek8/golang feeds/packages/lang/golang
+# wget -N https://raw.githubusercontent.com/openwrt/packages/master/lang/golang/golang/Makefile -P feeds/packages/lang/golang/golang/
+
 # replace luci-theme-argon to lastest update
 rm -rf feeds/luci/applications/luci-app-argon-config
 rm -rf feeds/packages/theme/luci-theme-argon 
@@ -27,20 +32,6 @@ rm -rf feeds/packages/net/v2ray-geodata
 git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
 git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 
-# replace smartdns to lastest update
-# rm -rf feeds/luci/applications/luci-app-smartdns
-# rm -rf feeds/packages/net/{alist,adguardhome,smartdns}
-# rm -rf feeds/smpackage/{alist,adguardhome,smartdns}
-# rm -rf feeds/smpackage/luci-app-smartdns
-# git clone https://github.com/pymumu/openwrt-smartdns feeds/packages/net/smartdns
-# git clone https://github.com/pymumu/luci-app-smartdns feeds/luci/applications/luci-app-smartdns
-
-# goland 2.1 to golang 2.2
-# rm -rf feeds/packages/lang/golang
-# git clone https://github.com/sbwml/packages_lang_golang -b 24.x feeds/packages/lang/golang
-# git clone https://github.com/smpackagek8/golang feeds/packages/lang/golang
-# wget -N https://raw.githubusercontent.com/openwrt/packages/master/lang/golang/golang/Makefile -P feeds/packages/lang/golang/golang/
-# wget -N https://raw.githubusercontent.com/leesuncom/NetGearR7000/refs/heads/main/default-settings/files/99-default-settings-chinese -P feeds/package/emortal/default-settings/files/99-default-settings-chinese
 
 
 
