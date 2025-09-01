@@ -13,7 +13,7 @@
 # goland 2.1 to golang 2.2
 #rm -rf feeds/packages/lang/golang
 #git clone https://github.com/smpackagek8/golang feeds/packages/lang/golang
-wget -N https://raw.githubusercontent.com/openwrt/packages/master/lang/golang/golang/Makefile -P feeds/packages/lang/golang/golang/
+# wget -N https://raw.githubusercontent.com/openwrt/packages/master/lang/golang/golang/Makefile -P feeds/packages/lang/golang/golang/
 
 # replace luci-theme-argon to lastest update
 rm -rf feeds/luci/applications/luci-app-argon-config
