@@ -198,7 +198,6 @@ jobs:
         cp -rfv ./diy/* ./ || true
         chmod 755 ./package/base-files/files/etc/hosts.sh || true
         chmod 755 ./package/base-files/files/etc/updatew.sh || true
-        chmod 755 ./package/base-files/files/etc/smartdns/check-doh.sh || true 
     - name: Apply patches
       run: |
         cd openwrt
