@@ -23,6 +23,10 @@ sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/M
 # 修改主机名
 sed -i 's/LEDE/R7000/g' package/base-files/files/bin/config_generate
 
+# fixed rust host build download llvm in ci error
+sed -i 's/--set=llvm\.download-ci-llvm=false/--set=llvm.download-ci-llvm=true/' feeds/packages/lang/rust/Makefile
+grep -q -- '--ci false \\' feeds/packages/lang/rust/Makefile || sed -i '/x\.py \\/a \        --ci false \\' feeds/packages/lang/rust/Makefile
+
 # sed -i -e "s/odhcp6c/#odhcp6c/" -e "s/odhcpd-ipv6only/#odhcpd-ipv6only/" -e "s/luci-app-cpufreq/#luci-app-cpufreq/" -e "s/procd-ujail//" include/target.mk
   sed -i \
   -e 's/\bluci-app-accesscontrol\b/#&/g' \
