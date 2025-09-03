@@ -17,6 +17,7 @@ config device
 	list ports 'lan3'
 	list ports 'lan4'
 	option ipv6 '0'
+	option promisc '1'
 
 config interface 'lan'
 	option device 'br-lan'
